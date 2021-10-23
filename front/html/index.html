@@ -73,7 +73,14 @@
           <h2>Une gamme d'articles exclusifs</h2>
         </div>
         <section class="items" id="items">
-          
+          <a  href="./product.html?id=${product._id}" >
+            <article >
+            <img src="${product.imageUrl}" alt="${product.altTxt}">
+            <h3 class ="productName">${product.name}</h3>
+            
+            <p class="productDescription">${product.description}</p>
+            </article>
+            </a>
         </section>
       </div>
     </main>
