@@ -18,7 +18,7 @@ const id = params.get("id");
 fetch(`http://localhost:3000/api/products/${id}`)
   .then((response) => response.json())
   .then((response) => {
-    console.log(response);
+    /*console.log(response);*/
     let html = "";
 
     html += ` 
@@ -45,8 +45,10 @@ fetch(`http://localhost:3000/api/products/${id}`)
         <div class="item__content__settings__color">
           <label for="color-select">Choisir une couleur :</label>
           <select name="color-select" id="colors">
-            <option value=""> ${response.colors}</option>
-          
+          <option value="">--SVP, choisissez une couleur --</option>
+          ${response.colors
+            .map((color) => "<option>" + color + "</option>")
+            .join("")}
           </select>
         </div>
 
@@ -73,3 +75,29 @@ fetch(`http://localhost:3000/api/products/${id}`)
    `;
     document.getElementById("item").innerHTML = html;
   });
+
+/*const selectElt = document.querySelector("#colors");
+console.log(selectElt);
+
+let cartBtn = document.querySelector("#addToCart");
+console.log(cartBtn);
+
+function handleEvent(selector, eventTarget, event) {
+  document.querySelector(cartBtn).addEventListener(click, (e) => {
+    e.preventDefault();
+    const selectElt = documentquerySelector("#colors");
+    console.log(selectElt.value);
+    if (selectElt.value.includes("SVP")) {
+      alert("Veuillez choisir une couleur");
+    } else {
+      alert("vous avez choisi" + selectElt.value);
+    }
+  });
+}
+
+/*const selectElt = document.querySelector("#addToCart");
+console.log(selectElt);*/
+
+let cartBtn = document.querySelector("#addToCart");
+console.log(cartBtn);
+cartBtn.textContent = "salut";
