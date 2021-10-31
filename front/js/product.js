@@ -18,7 +18,7 @@ const id = params.get("id");
 fetch(`http://localhost:3000/api/products/${id}`)
   .then((response) => response.json())
   .then((response) => {
-    /*console.log(response);*/
+    console.log(response);
     let html = "";
 
     html += ` 
@@ -93,11 +93,7 @@ function handleEvent(selector, eventTarget, event) {
       alert("vous avez choisi" + selectElt.value);
     }
   });
-}
+}*/
 
-/*const selectElt = document.querySelector("#addToCart");
-console.log(selectElt);*/
-
-let cartBtn = document.querySelector("#addToCart");
-console.log(cartBtn);
-cartBtn.textContent = "salut";
+const selectElt = document.querySelector("#colors");
+console.log(selectElt);
