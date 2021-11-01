@@ -74,26 +74,26 @@ fetch(`http://localhost:3000/api/products/${id}`)
   </article>
    `;
     document.getElementById("item").innerHTML = html;
+    let cartBtn = document.querySelector("#addToCart");
+    console.log(cartBtn);
+
+    cartBtn.addEventListener("click", (e) => {
+      const selectColor = document.getElementById("colors").value;
+      console.log(selectColor);
+      if (!selectColor) {
+        alert("Veuillez choisir une couleur");
+        return;
+      } else {
+        alert("Vous avez choisi la couleur : " + selectColor);
+      }
+    });
   });
 
 /*const selectElt = document.querySelector("#colors");
-console.log(selectElt);
+console.log(selectElt);*/
 
-let cartBtn = document.querySelector("#addToCart");
-console.log(cartBtn);
-
-function handleEvent(selector, eventTarget, event) {
-  document.querySelector(cartBtn).addEventListener(click, (e) => {
-    e.preventDefault();
-    const selectElt = documentquerySelector("#colors");
-    console.log(selectElt.value);
-    if (selectElt.value.includes("SVP")) {
-      alert("Veuillez choisir une couleur");
-    } else {
-      alert("vous avez choisi" + selectElt.value);
-    }
-  });
+/*
 }*/
 
-const selectElt = document.querySelector("#colors");
-console.log(selectElt);
+/*const selectElt = document.querySelector("#colors");
+console.log(selectElt);*/
