@@ -80,12 +80,28 @@ fetch(`http://localhost:3000/api/products/${id}`)
     cartBtn.addEventListener("click", (e) => {
       e.preventDefault();
       const selectColor = document.getElementById("colors").value;
-      console.log(selectColor);
+      //console.log(selectColor);
       const quantityKanap = document.getElementById("quantity").value;
-      console.log(quantityKanap);
-      console.log(id);
+      //console.log(quantityKanap);
+      //console.log(id);
+      let productItem = {
+        selectColor,
+        quantityKanap,
+        id,
+      };
+      console.log(productItem);
+
+      let productRegister = localStorage.getItem("produit");
+      if (productRegister) {
+      } else {
+        productRegister = [];
+        productRegister.push(productItem);
+        localStorage.setItem("produit", JSON.stringify(productRegister));
+        console.log(productRegister);
+      }
+
       if (!selectColor) {
-        alert("Veuillez choisir une couleur");
+        alert("Veuillez choisir une couleur svp");
         return;
       } else {
         alert("Vous avez choisi la couleur : " + selectColor);
