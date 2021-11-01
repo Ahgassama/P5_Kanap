@@ -78,8 +78,12 @@ fetch(`http://localhost:3000/api/products/${id}`)
     console.log(cartBtn);
 
     cartBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       const selectColor = document.getElementById("colors").value;
       console.log(selectColor);
+      const quantityKanap = document.getElementById("quantity").value;
+      console.log(quantityKanap);
+      console.log(id);
       if (!selectColor) {
         alert("Veuillez choisir une couleur");
         return;
