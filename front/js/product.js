@@ -91,12 +91,12 @@ fetch(`http://localhost:3000/api/products/${id}`)
       };
       console.log(productItem);
 
-      let productRegister = localStorage.getItem("produit");
+      let productRegister = JSON.parse(localStorage.getItem("canape"));
       if (productRegister) {
       } else {
         productRegister = [];
         productRegister.push(productItem);
-        localStorage.setItem("produit", JSON.stringify(productRegister));
+        localStorage.setItem("canape", JSON.stringify(productRegister));
         console.log(productRegister);
       }
 
