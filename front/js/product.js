@@ -81,9 +81,19 @@ fetch(`http://localhost:3000/api/products/${id}`)
       e.preventDefault();
       const selectColor = document.getElementById("colors").value;
       //console.log(selectColor);
-      const quantityKanap = document.getElementById("quantity").value;
+      const quantityKanap = parseInt(document.getElementById("quantity").value);
       //console.log(quantityKanap);
       //console.log(id);
+      if (!selectColor) {
+        alert("Veuillez choisir une couleur svp");
+        return;
+      } else {
+        alert("Vous avez choisi la couleur : " + selectColor);
+      }
+
+      if (quantityKanap == 0) {
+        alert("Merci de spécifier le nombre de canapé que vous souhaitez");
+      }
       let productItem = {
         selectColor,
         quantityKanap,
@@ -91,21 +101,25 @@ fetch(`http://localhost:3000/api/products/${id}`)
       };
       console.log(productItem);
 
-      let productRegister = JSON.parse(localStorage.getItem("canape"));
-      if (productRegister) {
-      } else {
-        productRegister = [];
+      let productRegister = [];
+      let otherProduct = true;
+
+      if (localStorage.getItem("canape") === null) {
         productRegister.push(productItem);
         localStorage.setItem("canape", JSON.stringify(productRegister));
-        console.log(productRegister);
-      }
-
-      if (!selectColor) {
-        alert("Veuillez choisir une couleur svp");
-        return;
       } else {
-        alert("Vous avez choisi la couleur : " + selectColor);
+        productRegister = JSON.parse(localStorage.getItem("canape"));
+
+        productRegister.forEach((j) => {
+          if (id == j.id && selectColor == j.selectColor) {
+            j.quantityKanap += quantityKanap;
+            otherProduct = false;
+          }
+        });
+        if (otherProduct) productRegister.push(productItem);
+        localStorage.setItem("canape", JSON.stringify(productRegister));
       }
+      console.log(productRegister);
     });
   });
 
