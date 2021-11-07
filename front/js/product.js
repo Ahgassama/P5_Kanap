@@ -18,7 +18,7 @@ const id = params.get("id");
 fetch(`http://localhost:3000/api/products/${id}`)
   .then((response) => response.json())
   .then((response) => {
-    console.log(response);
+    // console.log(response);
     let html = "";
 
     html += ` 
@@ -98,6 +98,9 @@ fetch(`http://localhost:3000/api/products/${id}`)
         selectColor,
         quantityKanap,
         id,
+        nameKanap: response.name,
+        price: response.price,
+        imageUrl: response.imageUrl,
       };
       console.log(productItem);
 
