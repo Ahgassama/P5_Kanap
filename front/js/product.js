@@ -1,17 +1,3 @@
-/*(async function () {
-  const productId = getProductId();
-  console.log(productId);
-});
-
-function getProductId() {
-  new URL(location.href).searchParams.get("id");
-}
-
-function getProduct() {
-  document.getElementById("title").textContent = "name";
-}
-*/
-
 const params = new URLSearchParams(document.location.search);
 const id = params.get("id");
 
@@ -74,33 +60,26 @@ fetch(`http://localhost:3000/api/products/${id}`)
   </article>
    `;
     document.getElementById("item").innerHTML = html;
-    let cartBtn = document.querySelector("#addToCart");
-    console.log(cartBtn);
 
-    cartBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const selectColor = document.getElementById("colors").value;
-      //console.log(selectColor);
-      const quantityKanap = parseInt(document.getElementById("quantity").value);
-      //console.log(quantityKanap);
-      //console.log(id);
-      if (!selectColor) {
+    function getSelectedColor(selector) {
+      if (!selector.value) {
         alert("Veuillez choisir une couleur svp");
         return;
-      } else {
-        alert("Vous avez choisi la couleur : " + selectColor);
       }
+      alert("Vous avez choisi la couleur : " + selector.value);
+      return selector.value;
+    }
 
-      if (quantityKanap == 0) {
+    function getQuantity(selector) {
+      const quantity = parseInt(selector.value);
+      if (quantity === 0) {
         alert("Merci de spécifier le nombre de canapé que vous souhaitez");
+        return;
       }
-      let productItem = {
-        selectColor,
-        quantityKanap,
-        id,
-      };
-      console.log(productItem);
+      return quantity;
+    }
 
+    function addProducToCart(productItem) {
       let productRegister = [];
       let otherProduct = true;
 
@@ -120,14 +99,23 @@ fetch(`http://localhost:3000/api/products/${id}`)
         localStorage.setItem("canape", JSON.stringify(productRegister));
       }
       console.log(productRegister);
-    });
+    }
+    function addListeners(id) {
+      let cartBtn = document.querySelector("#addToCart");
+      console.log(cartBtn);
+      cartBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const selectColor = getSelectedColor(document.getElementById("colors"));
+        const quantityKanap = getQuantity(document.getElementById("quantity"));
+
+        if (quantityKanap > 0 && selectColor) {
+          let productItem = {
+            selectColor,
+            quantityKanap,
+            id,
+          };
+        }
+        addProducToCart(productItem);
+      });
+    }
   });
-
-/*const selectElt = document.querySelector("#colors");
-console.log(selectElt);*/
-
-/*
-}*/
-
-/*const selectElt = document.querySelector("#colors");
-console.log(selectElt);*/

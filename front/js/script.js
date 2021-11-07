@@ -29,7 +29,7 @@ getDataFrom(url).then((data) => {
   console.log(data);
 });
 console.log("Hello");*/
-
+//Appel de la page API Produits
 fetch("http://localhost:3000/api/products")
   .then((response) => response.json())
   .then((response) => {
@@ -45,7 +45,7 @@ fetch("http://localhost:3000/api/products")
 
     document.getElementById("items").innerHTML = html;
   });
-
+//Affichage des éléments de l'API sur la page du site
 function displayProduct(product) {
   return `
     <a  href="./product.html?id=${product._id}" >
