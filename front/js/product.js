@@ -1,10 +1,11 @@
 const params = new URLSearchParams(document.location.search);
 const id = params.get("id");
+console.log(id);
 
 fetch(`http://localhost:3000/api/products/${id}`)
   .then((response) => response.json())
   .then((response) => {
-    console.log(response);
+    //console.log(response);
     let html = "";
 
     html += ` 
