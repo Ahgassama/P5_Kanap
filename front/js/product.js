@@ -116,6 +116,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
         productRegister.forEach((j) => {
           if (id == j.id && selectColor == j.selectColor) {
             j.quantityKanap += quantityKanap;
+            j.price += j.quantityKanap * price;
             otherProduct = false;
           }
         });
