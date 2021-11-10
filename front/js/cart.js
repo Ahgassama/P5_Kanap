@@ -40,3 +40,32 @@ if (productRegister.length !== 0) {
 } else {
   console.log("je  suis vide");
 }
+
+let totalPriceCalcul = [];
+let totalQuantityCalcul = [];
+
+for (let t = 0; t < productRegister.length; t++) {
+  let prixTotalPanier = productRegister[t].price;
+  let quantityPanier = productRegister[t].quantityKanap;
+  totalPriceCalcul.push(prixTotalPanier * quantityPanier);
+  totalQuantityCalcul.push(quantityPanier);
+  console.log(totalQuantityCalcul);
+  console.log(totalPriceCalcul);
+}
+
+const reducer = (accumulator, currentValue) => accumulator + currentValue;
+const totalPrice = totalPriceCalcul.reduce(reducer, 0);
+const totalQuantity = totalQuantityCalcul.reduce(reducer, 0);
+console.log(totalQuantity);
+
+/*let totalQuantityCalcul = [];
+for (let q = 0; q < productRegister.length; q++) {
+  
+  totalQuantityCalcul.push(quantityPanier);
+  console.log(totalQuantityCalcul);*/
+
+const displayTotalPrice = document.getElementById("totalPrice");
+displayTotalPrice.innerHTML = totalPrice;
+
+const displayTotalQuantity = document.getElementById("totalQuantity");
+displayTotalQuantity.innerHTML = totalQuantity;
