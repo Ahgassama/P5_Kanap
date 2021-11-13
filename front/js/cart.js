@@ -69,3 +69,17 @@ displayTotalPrice.innerHTML = totalPrice;
 
 const displayTotalQuantity = document.getElementById("totalQuantity");
 displayTotalQuantity.innerHTML = totalQuantity;
+
+let itemQuantity = document.querySelector(".itemQuantity");
+
+function deleteProduct(event) {
+  const index = event.target.getAttribute("data-index");
+  productRegister.splice(index, 1);
+  localStorage.setItem("canape", JSON.stringify(productRegister));
+  location.reload();
+}
+
+const deleteBtn = document.querySelectorAll(".deleteItem");
+for (d = 0; d < deleteBtn.length; d++) {
+  deleteBtn[d].addEventListener("click", deleteProduct);
+}
