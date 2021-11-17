@@ -38,38 +38,41 @@ if (productRegister.length !== 0) {
  </article>`;
   }
   positionElement.innerHTML = productPanier;
+  displayTotal();
 } else {
   console.log("je  suis vide");
 }
 
-let totalPriceCalcul = [];
-let totalQuantityCalcul = [];
+function displayTotal() {
+  let totalPriceCalcul = [];
+  let totalQuantityCalcul = [];
 
-for (let t = 0; t < productRegister.length; t++) {
-  let prixTotalPanier = productRegister[t].price;
-  let quantityPanier = productRegister[t].quantityKanap;
-  totalPriceCalcul.push(prixTotalPanier * quantityPanier);
-  totalQuantityCalcul.push(quantityPanier);
-  //console.log(totalQuantityCalcul);
-  //console.log(totalPriceCalcul);
-}
+  for (let t = 0; t < productRegister.length; t++) {
+    let prixTotalPanier = productRegister[t].price;
+    let quantityPanier = productRegister[t].quantityKanap;
+    totalPriceCalcul.push(prixTotalPanier * quantityPanier);
+    totalQuantityCalcul.push(quantityPanier);
+    //console.log(totalQuantityCalcul);
+    //console.log(totalPriceCalcul);
+  }
 
-const reducer = (accumulator, currentValue) => accumulator + currentValue;
-const totalPrice = totalPriceCalcul.reduce(reducer, 0);
-const totalQuantity = totalQuantityCalcul.reduce(reducer, 0);
-//console.log(totalQuantity);
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  const totalPrice = totalPriceCalcul.reduce(reducer, 0);
+  const totalQuantity = totalQuantityCalcul.reduce(reducer, 0);
+  //console.log(totalQuantity);
 
-/*let totalQuantityCalcul = [];
+  /*let totalQuantityCalcul = [];
 for (let q = 0; q < productRegister.length; q++) {
   
   totalQuantityCalcul.push(quantityPanier);
   console.log(totalQuantityCalcul);*/
 
-const displayTotalPrice = document.getElementById("totalPrice");
-displayTotalPrice.innerHTML = totalPrice;
+  const displayTotalPrice = document.getElementById("totalPrice");
+  displayTotalPrice.innerHTML = totalPrice;
 
-const displayTotalQuantity = document.getElementById("totalQuantity");
-displayTotalQuantity.innerHTML = totalQuantity;
+  const displayTotalQuantity = document.getElementById("totalQuantity");
+  displayTotalQuantity.innerHTML = totalQuantity;
+}
 
 let itemQuantity = document.querySelector(".itemQuantity");
 
@@ -108,6 +111,7 @@ console.log(article);
 for (let n = 0; n < article.length; n++) {
   const btnDelete = article[n].querySelector(".deleteItem");
   btnDelete.addEventListener("click", (e) => {
+    e.preventDefault();
     console.log(n);
     const elt = e.target.closest("article");
     console.log(elt);
@@ -116,6 +120,7 @@ for (let n = 0; n < article.length; n++) {
     productRegister.splice(index, 1);
     localStorage.setItem("canape", JSON.stringify(productRegister));
     elt.remove();
+    displayTotal();
   });
   const btnAddProduct = article[n].querySelector(".itemQuantity");
   btnAddProduct.addEventListener("input", (e) => {
@@ -128,6 +133,7 @@ for (let n = 0; n < article.length; n++) {
     console.log(index);
     productRegister[index].quantityKanap = parseInt(e.target.value);
     localStorage.setItem("canape", JSON.stringify(productRegister));
-    location.reload();
+    //location.reload();
+    displayTotal();
   });
 }
