@@ -20,7 +20,7 @@ function displayItem() {
    <div class="cart__item__content">
      <div class="cart__item__content__titlePrice">
        <h2>${productRegister[a].nameKanap}</h2>
-       <p>${
+       <p class="itemTotal">${
          productRegister[a].price * productRegister[a].quantityKanap
        } euros</p>
      </div>
@@ -81,34 +81,6 @@ let itemQuantity = document.querySelector(".itemQuantity");
 
 //Suppression article
 
-/*function deleteProduct(event) {
-  const index = event.target.getAttribute("data-index");
-  productRegister.splice(index, 1);
-  localStorage.setItem("canape", JSON.stringify(productRegister));
-  location.reload();
-}
-
-const deleteBtn = document.querySelectorAll(".deleteItem");
-for (d = 0; d < deleteBtn.length; d++) {
-  deleteBtn[d].addEventListener("click", deleteProduct);
-}
-*/
-
-/*let btnDelete = document.querySelectorAll(".deleteItem");
-console.log(btnDelete);
-for (let n = 0; n < btnDelete.length; n++) {
-  btnDelete[n].addEventListener("click", (e) => {
-    console.log(n);
-    const elt = e.target.closest("article");
-    console.log(elt);
-    const index = elt.dataset.index;
-    console.log(index);
-    productRegister.splice(index, 1);
-    localStorage.setItem("canape", JSON.stringify(productRegister));
-    elt.remove();
-   
-  });
-}*/
 let article = document.querySelectorAll(".cart__item");
 console.log(article);
 for (let n = 0; n < article.length; n++) {
@@ -136,8 +108,12 @@ for (let n = 0; n < article.length; n++) {
     console.log(index);
     productRegister[index].quantityKanap = parseInt(e.target.value);
     localStorage.setItem("canape", JSON.stringify(productRegister));
-    location.reload();
-    //displayTotal();
+    console.log(article[n]);
+    article[n].querySelector(".itemTotal").innerHTML = `${
+      productRegister[index].quantityKanap * productRegister[index].price
+    }euros`;
+    //location.reload();
+    displayTotal();
     //displayItem();
   });
 }
@@ -145,13 +121,14 @@ for (let n = 0; n < article.length; n++) {
 //---------Partie Formulaire
 
 const btnSendForm = document.querySelector("#order");
-btnSendForm.addEventListener("click", () => {
+btnSendForm.addEventListener("click", (e) => {
+  e.preventDefault();
   //Récupérer les valeurs du formulaire
-  const formulaireValues = {
-    prenom: document.querySelector("#firstName").value,
-    nom: document.querySelector("#lastName").value,
-    adresse: document.querySelector("#address").value,
-    ville: document.querySelector("#city").value,
+  const contact = {
+    firstName: document.querySelector("#firstName").value,
+    lastName: document.querySelector("#lastName").value,
+    address: document.querySelector("#address").value,
+    city: document.querySelector("#city").value,
     email: document.querySelector("#email").value,
   };
   //Controle validation formulaire
@@ -165,7 +142,7 @@ btnSendForm.addEventListener("click", () => {
   addressControl();
   emailControl();
   function emailControl() {
-    const mail = formulaireValues.email;
+    const mail = contact.email;
     if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]{2,}\.[a-z]{2,4}$/.test(mail)) {
       return true;
     } else {
@@ -176,7 +153,7 @@ btnSendForm.addEventListener("click", () => {
     }
   }
   function firstNameControl() {
-    const firstName = formulaireValues.prenom;
+    const firstName = contact.firstName;
     if (regexPrenomNomVille(firstName)) {
       return true;
     } else {
@@ -187,7 +164,7 @@ btnSendForm.addEventListener("click", () => {
     }
   }
   function lastNameControl() {
-    const lastName = formulaireValues.nom;
+    const lastName = contact.lastName;
     if (regexPrenomNomVille(lastName)) {
       return true;
     } else {
@@ -198,7 +175,7 @@ btnSendForm.addEventListener("click", () => {
     }
   }
   function cityControl() {
-    const city = formulaireValues.ville;
+    const city = contact.city;
     if (regexPrenomNomVille(city)) {
       return true;
     } else {
@@ -209,7 +186,7 @@ btnSendForm.addEventListener("click", () => {
     }
   }
   function addressControl() {
-    const adress = formulaireValues.adresse;
+    const adress = contact.address;
     if (/^(([a-zA-ZÀ-ÿ0-9]+[\s\-]{1}[a-zA-ZÀ-ÿ0-9]+)){1,10}$/.test(adress)) {
       return true;
     } else {
@@ -226,7 +203,29 @@ btnSendForm.addEventListener("click", () => {
     addressControl() &&
     emailControl()
   ) {
-    localStorage.setItem("formulaireValues", JSON.stringify(formulaireValues));
+    localStorage.setItem("formulaireValues", JSON.stringify(contact));
+    //Envoyer le formulaire et les produits sélectionnés vers l'API
+    const products = productRegister.map((product) => product.id);
+    const toSend = {
+      products,
+      contact,
+    };
+    console.log(toSend);
+
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      body: JSON.stringify(toSend),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        localStorage.setItem("order", JSON.stringify(response));
+        document.location.href =
+          "confirmation.html?orderId=" + response.orderId;
+        console.log(response);
+      });
   }
   /*if (lastNameControl()) {
     localStorage.setItem("formulaireValues", JSON.stringify(formulaireValues));
@@ -252,45 +251,4 @@ btnSendForm.addEventListener("click", () => {
    
   }*/
   //Mettre l'ensemble des valeurs dans le localstorage
-
-  //Envoyer le formulaire et les produits sélectionnés vers l'API
-
-  const toSend = {
-    productRegister,
-    formulaireValues,
-  };
-  console.log(toSend);
-
-  const command = fetch(`http://localhost:3000/api/products/order`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(toSend),
-  });
-  /*.then((response) => response.json())
-    .then((data) => {
-      localStorage.setItem("order", JSON.stringify(data));
-      document.location.href = "confirmation.html";
-    });*/
 });
-
-/*.then((response) => response.json())
-  .then((data) => {
-    localStorage.setItem("order", JSON.stringify(data));
-    document.location.href = "confirmation.html";
-  });
-*/
-/*localStorage.setItem("prenom", document.querySelector("#firstName").value);
-  localStorage.setItem("nom", document.querySelector("#lastName").value);
-  localStorage.setItem("adresse", document.querySelector("#address").value);
-  localStorage.setItem("ville", document.querySelector("#city").value);
-  localStorage.setItem("email", document.querySelector("#email").value);
-  const formulaire = {
-    prenom: localStorage.getItem("prenom"),
-    nom: localStorage.getItem("nom"),
-    adresse: localStorage.getItem("adresse"),
-    ville: localStorage.getItem("ville"),
-    email: localStorage.getItem("email"),
-  };
-  console.log(formulaire);*/

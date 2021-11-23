@@ -1,3 +1,4 @@
+import { getParamFromUrl } from "./functions.js";
 /*(async function () {
   const productId = getProductId();
   console.log(productId);
@@ -12,8 +13,7 @@ function getProduct() {
 }
 */
 
-const params = new URLSearchParams(document.location.search);
-const id = params.get("id");
+const id = getParamFromUrl("id");
 
 fetch(`http://localhost:3000/api/products/${id}`)
   .then((response) => response.json())
