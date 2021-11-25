@@ -1,17 +1,4 @@
 import { getParamFromUrl } from "./functions.js";
-/*(async function () {
-  const productId = getProductId();
-  console.log(productId);
-});
-
-function getProductId() {
-  new URL(location.href).searchParams.get("id");
-}
-
-function getProduct() {
-  document.getElementById("title").textContent = "name";
-}
-*/
 
 const id = getParamFromUrl("id");
 
@@ -80,10 +67,9 @@ fetch(`http://localhost:3000/api/products/${id}`)
     cartBtn.addEventListener("click", (e) => {
       e.preventDefault();
       const selectColor = document.getElementById("colors").value;
-      //console.log(selectColor);
+
       const quantityKanap = parseInt(document.getElementById("quantity").value);
-      //console.log(quantityKanap);
-      //console.log(id);
+
       if (!selectColor) {
         alert("Veuillez choisir une couleur svp");
         return;
@@ -125,12 +111,3 @@ fetch(`http://localhost:3000/api/products/${id}`)
       console.log(productRegister);
     });
   });
-
-/*const selectElt = document.querySelector("#colors");
-console.log(selectElt);*/
-
-/*
-}*/
-
-/*const selectElt = document.querySelector("#colors");
-console.log(selectElt);*/

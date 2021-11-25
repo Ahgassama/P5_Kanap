@@ -6,7 +6,7 @@ console.log(productRegister);
 
 const positionElement = document.querySelector("#cart__items");
 displayItem();
-//console.log(positionElement);
+
 function displayItem() {
   if (productRegister.length !== 0) {
     let productPanier = "";
@@ -55,20 +55,11 @@ function displayTotal() {
     let quantityPanier = productRegister[t].quantityKanap;
     totalPriceCalcul.push(prixTotalPanier * quantityPanier);
     totalQuantityCalcul.push(quantityPanier);
-    //console.log(totalQuantityCalcul);
-    //console.log(totalPriceCalcul);
   }
 
   const reducer = (accumulator, currentValue) => accumulator + currentValue;
   const totalPrice = totalPriceCalcul.reduce(reducer, 0);
   const totalQuantity = totalQuantityCalcul.reduce(reducer, 0);
-  //console.log(totalQuantity);
-
-  /*let totalQuantityCalcul = [];
-for (let q = 0; q < productRegister.length; q++) {
-  
-  totalQuantityCalcul.push(quantityPanier);
-  console.log(totalQuantityCalcul);*/
 
   const displayTotalPrice = document.getElementById("totalPrice");
   displayTotalPrice.innerHTML = totalPrice;
@@ -112,9 +103,8 @@ for (let n = 0; n < article.length; n++) {
     article[n].querySelector(".itemTotal").innerHTML = `${
       productRegister[index].quantityKanap * productRegister[index].price
     }euros`;
-    //location.reload();
+
     displayTotal();
-    //displayItem();
   });
 }
 
@@ -211,7 +201,7 @@ btnSendForm.addEventListener("click", (e) => {
       contact,
     };
     console.log(toSend);
-
+    //Mettre l'ensemble des valeurs dans le localstorage et récupérer l'id de commande
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       body: JSON.stringify(toSend),
@@ -227,28 +217,4 @@ btnSendForm.addEventListener("click", (e) => {
         console.log(response);
       });
   }
-  /*if (lastNameControl()) {
-    localStorage.setItem("formulaireValues", JSON.stringify(formulaireValues));
-  } else {
-   
-  }
-
-  if (emailControl()) {
-    localStorage.setItem("formulaireValues", JSON.stringify(formulaireValues));
-  } else {
-  
-  }
-
-  if (cityControl()) {
-    localStorage.setItem("formulaireValues", JSON.stringify(formulaireValues));
-  } else {
-
-  }
-
-  if (addressControl()) {
-    localStorage.setItem("formulaireValues", JSON.stringify(formulaireValues));
-  } else {
-   
-  }*/
-  //Mettre l'ensemble des valeurs dans le localstorage
 });

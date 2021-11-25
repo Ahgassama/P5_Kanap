@@ -1,35 +1,3 @@
-/*const url = "http://localhost:3000/api/products";
-
-let requete = new XMLHttpRequest();
-requete.open("GET", url);
-requete.responseType = "json";
-requete.send();
-console.log(url);
-*/
-/*requete.onload = function () {
-  if (requete.readyState === XMLHttpRequest.DONE) {
-    if (requete.status === 200) {
-      let reponse = requete.response;
-      console.log(reponse);
-      let canape = reponse.name;
-      document.getElementById("titles").textContent = canape;
-    } else {
-      alert("un problème est survenu");
-    }
-  }
-};
-*/
-/*async function getDataFrom(url) {
-  let response = await fetch(url);
-  let data = await response.json();
-  return data;
-}
-
-getDataFrom(url).then((data) => {
-  console.log(data);
-});
-console.log("Hello");*/
-
 fetch("http://localhost:3000/api/products")
   .then((response) => response.json())
   .then((response) => {
