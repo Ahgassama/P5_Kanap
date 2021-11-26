@@ -5,7 +5,6 @@ const id = getParamFromUrl("id");
 fetch(`http://localhost:3000/api/products/${id}`)
   .then((response) => response.json())
   .then((response) => {
-    // console.log(response);
     let html = "";
 
     html += ` 
@@ -62,7 +61,6 @@ fetch(`http://localhost:3000/api/products/${id}`)
    `;
     document.getElementById("item").innerHTML = html;
     let cartBtn = document.querySelector("#addToCart");
-    console.log(cartBtn);
 
     cartBtn.addEventListener("click", (e) => {
       e.preventDefault();
@@ -88,7 +86,6 @@ fetch(`http://localhost:3000/api/products/${id}`)
         price: response.price,
         imageUrl: response.imageUrl,
       };
-      console.log(productItem);
 
       let productRegister = [];
       let otherProduct = true;
@@ -108,6 +105,5 @@ fetch(`http://localhost:3000/api/products/${id}`)
         if (otherProduct) productRegister.push(productItem);
         localStorage.setItem("canape", JSON.stringify(productRegister));
       }
-      console.log(productRegister);
     });
   });

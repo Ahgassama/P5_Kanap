@@ -1,5 +1,4 @@
 let productRegister = JSON.parse(localStorage.getItem("canape"));
-console.log(productRegister);
 
 //Affichage des produits du panier
 //Sélection de la classe ou injecter le code html
@@ -68,21 +67,17 @@ function displayTotal() {
   displayTotalQuantity.innerHTML = totalQuantity;
 }
 
-let itemQuantity = document.querySelector(".itemQuantity");
-
 //Suppression article
 
+let itemQuantity = document.querySelector(".itemQuantity");
 let article = document.querySelectorAll(".cart__item");
-console.log(article);
+
 for (let n = 0; n < article.length; n++) {
   const btnDelete = article[n].querySelector(".deleteItem");
   btnDelete.addEventListener("click", (e) => {
     e.preventDefault();
-    console.log(n);
     const elt = e.target.closest("article");
-    console.log(elt);
     const index = elt.dataset.index;
-    console.log(index);
     productRegister.splice(index, 1);
     localStorage.setItem("canape", JSON.stringify(productRegister));
     elt.remove();
@@ -90,19 +85,16 @@ for (let n = 0; n < article.length; n++) {
   });
   const btnAddProduct = article[n].querySelector(".itemQuantity");
   btnAddProduct.addEventListener("input", (e) => {
-    console.log("input value", e.target.value);
     //on récupère l'index du produit dans le storage
     //on actualise la quantité
     //on actualise le total
     //on sauvegarde le localstorage
     const index = article[n].dataset.index;
-    console.log(index);
     productRegister[index].quantityKanap = parseInt(e.target.value);
     localStorage.setItem("canape", JSON.stringify(productRegister));
-    console.log(article[n]);
     article[n].querySelector(".itemTotal").innerHTML = `${
       productRegister[index].quantityKanap * productRegister[index].price
-    }euros`;
+    } euros`;
 
     displayTotal();
   });
@@ -200,7 +192,6 @@ btnSendForm.addEventListener("click", (e) => {
       products,
       contact,
     };
-    console.log(toSend);
     //Mettre l'ensemble des valeurs dans le localstorage et récupérer l'id de commande
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
@@ -214,7 +205,6 @@ btnSendForm.addEventListener("click", (e) => {
         localStorage.setItem("order", JSON.stringify(response));
         document.location.href =
           "confirmation.html?orderId=" + response.orderId;
-        console.log(response);
       });
   }
 });
