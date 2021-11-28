@@ -8,7 +8,7 @@ fetch("http://localhost:3000/api/products")
     for (let i = 0; i < response.length; i++) {
       html += displayProduct(response[i]);
     }
-
+    // Ajout des éléments créés dans le HTML afin d'afficher les produits
     document.getElementById("items").innerHTML = html;
   });
 //fonction pour afficher les canapés de la page d'accueil

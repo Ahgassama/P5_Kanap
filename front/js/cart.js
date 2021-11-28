@@ -44,7 +44,7 @@ function displayItem() {
     console.log("je  suis vide");
   }
 }
-
+//fonction pour la mise à jour du total du prix et des articles
 function displayTotal() {
   let totalPriceCalcul = [];
   let totalQuantityCalcul = [];
