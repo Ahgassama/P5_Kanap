@@ -1,3 +1,4 @@
+//Variable du tableau présent dans le localstorage
 let productRegister = localStorage.getItem("canape")
   ? JSON.parse(localStorage.getItem("canape"))
   : [];
@@ -164,7 +165,7 @@ btnSendForm.addEventListener("click", (e) => {
       });
   }
 });
-
+//Condition pour bloquer l'enregistrement d'une commande si le panier est vide
 function emptyBasket(productRegister) {
   if (productRegister.length > 0) {
     return true;
@@ -173,7 +174,7 @@ function emptyBasket(productRegister) {
     return false;
   }
 }
-
+//Ensemble des fonctions regex afin de valider le formulaire
 function firstNameControl(contact) {
   const regexPrenomNomVille = (value) => {
     return /^(([a-zA-ZÀ-ÿ]+[\s\-]{1}[a-zA-ZÀ-ÿ]+)|([a-zA-ZÀ-ÿ]+))$/.test(value);

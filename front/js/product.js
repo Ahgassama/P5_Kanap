@@ -1,7 +1,8 @@
 import { getParamFromUrl } from "./functions.js";
-
+//Récupération dans l'url de l'ID du produit sélectionné dans la page Accueil
 const id = getParamFromUrl("id");
 
+//Récupération du produit avec l'id depuis l'API
 fetch(`http://localhost:3000/api/products/${id}`)
   .then((response) => response.json())
   .then((response) => {
@@ -10,7 +11,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
     document.getElementById("item").innerHTML = html;
     addListeners(id, response.name, response.price, response.imageUrl);
   });
-
+//Affichage du produit
 function displayDetailedProduct(response) {
   return ` 
   <article>
@@ -61,10 +62,9 @@ function displayDetailedProduct(response) {
 </article>
  `;
 }
-
+//Ecoute du click pour l'ajout du produit dans le panier
 function addListeners(id, name, price, imageUrl) {
   let cartBtn = document.querySelector("#addToCart");
-  console.log(cartBtn);
 
   cartBtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -84,7 +84,7 @@ function addListeners(id, name, price, imageUrl) {
     }
   });
 }
-
+//Sélection de la couleur
 function getSelectedColor(selector) {
   if (!selector.value) {
     alert("Veuillez choisir une couleur svp");
@@ -93,7 +93,7 @@ function getSelectedColor(selector) {
   alert("Vous avez choisi la couleur : " + selector.value);
   return selector.value;
 }
-
+//Sélection de la quantité
 function getQuantity(selector) {
   const quantity = parseInt(selector.value);
   if (quantity === 0) {
@@ -102,16 +102,16 @@ function getQuantity(selector) {
   }
   return quantity;
 }
-
+//Ajout produit dans le panier
 function addProductToCart(productItem) {
-  console.log(productItem);
-
+  //Création du tableau dans la variable
   let productRegister = [];
   let otherProduct = true;
-
+  //Si le localstorage est vide, créé un nouveau tableau productRegister et enregistre le
   if (localStorage.getItem("canape") === null) {
     productRegister.push(productItem);
     localStorage.setItem("canape", JSON.stringify(productRegister));
+    //Sinon récupérer le tableau du localstorage , y ajouter le nouveau produit et enregistrer le tableau
   } else {
     productRegister = JSON.parse(localStorage.getItem("canape"));
 
@@ -124,5 +124,4 @@ function addProductToCart(productItem) {
     if (otherProduct) productRegister.push(productItem);
     localStorage.setItem("canape", JSON.stringify(productRegister));
   }
-  console.log(productRegister);
 }
