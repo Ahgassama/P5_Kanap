@@ -5,3 +5,9 @@ const orderId = getParamFromUrl("orderId");
 
 let getId = document.getElementById("orderId");
 getId.innerHTML = orderId;
+
+//Suppression du stockage des données
+//localStorage.removeItem("contact");
+//localStorage.removeItem("orderId");
+//localStorage.removeItem("products");
+localStorage.clear();

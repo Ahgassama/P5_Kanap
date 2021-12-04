@@ -1,4 +1,6 @@
-let productRegister = JSON.parse(localStorage.getItem("canape"));
+let productRegister = localStorage.getItem("canape")
+  ? JSON.parse(localStorage.getItem("canape"))
+  : [];
 
 //Affichage des produits du panier
 //Sélection de la classe ou injecter le code html
@@ -18,7 +20,9 @@ function displayItem() {
    </div>
    <div class="cart__item__content">
      <div class="cart__item__content__titlePrice">
-       <h2>${productRegister[a].nameKanap}</h2>
+       <h2>${productRegister[a].nameKanap} ${
+        productRegister[a].selectColor
+      }</h2>
        <p class="itemTotal">${
          productRegister[a].price * productRegister[a].quantityKanap
        } euros</p>
@@ -40,6 +44,7 @@ function displayItem() {
     positionElement.innerHTML = productPanier;
 
     displayTotal();
+    updateItem();
   } else {
     console.log("je  suis vide");
   }
@@ -67,44 +72,47 @@ function displayTotal() {
   displayTotalQuantity.innerHTML = totalQuantity;
 }
 
-//Suppression article
+//Suppression et modification du nombre d'article
 
 let itemQuantity = document.querySelector(".itemQuantity");
-let article = document.querySelectorAll(".cart__item");
+function updateItem() {
+  let article = document.querySelectorAll(".cart__item");
 
-for (let n = 0; n < article.length; n++) {
-  const btnDelete = article[n].querySelector(".deleteItem");
-  btnDelete.addEventListener("click", (e) => {
-    e.preventDefault();
-    const elt = e.target.closest("article");
-    const index = elt.dataset.index;
-    productRegister.splice(index, 1);
-    localStorage.setItem("canape", JSON.stringify(productRegister));
-    elt.remove();
-    displayTotal();
-  });
-  const btnAddProduct = article[n].querySelector(".itemQuantity");
-  btnAddProduct.addEventListener("input", (e) => {
-    //on récupère l'index du produit dans le storage
-    //on actualise la quantité
-    //on actualise le total
-    //on sauvegarde le localstorage
-    const index = article[n].dataset.index;
-    productRegister[index].quantityKanap = parseInt(e.target.value);
-    localStorage.setItem("canape", JSON.stringify(productRegister));
-    article[n].querySelector(".itemTotal").innerHTML = `${
-      productRegister[index].quantityKanap * productRegister[index].price
-    } euros`;
+  for (let n = 0; n < article.length; n++) {
+    const btnDelete = article[n].querySelector(".deleteItem");
+    btnDelete.addEventListener("click", (e) => {
+      e.preventDefault();
+      const elt = e.target.closest("article");
+      const index = elt.dataset.index;
+      productRegister.splice(index, 1);
+      localStorage.setItem("canape", JSON.stringify(productRegister));
+      elt.remove();
+      displayItem();
+      displayTotal();
+    });
+    const btnAddProduct = article[n].querySelector(".itemQuantity");
+    btnAddProduct.addEventListener("input", (e) => {
+      //on récupère l'index du produit dans le storage
+      //on actualise la quantité
+      //on actualise le total
+      //on sauvegarde le localstorage
+      const index = article[n].dataset.index;
+      productRegister[index].quantityKanap = parseInt(e.target.value);
+      localStorage.setItem("canape", JSON.stringify(productRegister));
+      article[n].querySelector(".itemTotal").innerHTML = `${
+        productRegister[index].quantityKanap * productRegister[index].price
+      } euros`;
 
-    displayTotal();
-  });
+      displayTotal();
+    });
+  }
 }
-
 //---------Partie Formulaire
 
 const btnSendForm = document.querySelector("#order");
 btnSendForm.addEventListener("click", (e) => {
   e.preventDefault();
+
   //Récupérer les valeurs du formulaire
   const contact = {
     firstName: document.querySelector("#firstName").value,
@@ -115,75 +123,19 @@ btnSendForm.addEventListener("click", (e) => {
   };
   //Controle validation formulaire
 
-  const regexPrenomNomVille = (value) => {
-    return /^(([a-zA-ZÀ-ÿ]+[\s\-]{1}[a-zA-ZÀ-ÿ]+)|([a-zA-ZÀ-ÿ]+))$/.test(value);
-  };
-  firstNameControl();
-  lastNameControl();
-  cityControl();
-  addressControl();
-  emailControl();
-  function emailControl() {
-    const mail = contact.email;
-    if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]{2,}\.[a-z]{2,4}$/.test(mail)) {
-      return true;
-    } else {
-      const errorMsg = "Merci de transmettre des données valides";
-      const displayError = document.querySelector("#emailErrorMsg");
-      displayError.innerHTML = errorMsg;
-      return false;
-    }
-  }
-  function firstNameControl() {
-    const firstName = contact.firstName;
-    if (regexPrenomNomVille(firstName)) {
-      return true;
-    } else {
-      const errorMsg = "Merci de transmettre des données valides";
-      const displayError = document.querySelector("#firstNameErrorMsg");
-      displayError.innerHTML = errorMsg;
-      return false;
-    }
-  }
-  function lastNameControl() {
-    const lastName = contact.lastName;
-    if (regexPrenomNomVille(lastName)) {
-      return true;
-    } else {
-      const errorMsg = "Merci de transmettre des données valides";
-      const displayError = document.querySelector("#lastNameErrorMsg");
-      displayError.innerHTML = errorMsg;
-      return false;
-    }
-  }
-  function cityControl() {
-    const city = contact.city;
-    if (regexPrenomNomVille(city)) {
-      return true;
-    } else {
-      const errorMsg = "Merci de transmettre des données valides";
-      const displayError = document.querySelector("#cityErrorMsg");
-      displayError.innerHTML = errorMsg;
-      return false;
-    }
-  }
-  function addressControl() {
-    const adress = contact.address;
-    if (/^(([a-zA-ZÀ-ÿ0-9]+[\s\-]{1}[a-zA-ZÀ-ÿ0-9]+)){1,10}$/.test(adress)) {
-      return true;
-    } else {
-      const errorMsg = "Merci de transmettre des données valides";
-      const displayError = document.querySelector("#addressErrorMsg");
-      displayError.innerHTML = errorMsg;
-      return false;
-    }
-  }
+  firstNameControl(contact);
+  lastNameControl(contact);
+  cityControl(contact);
+  addressControl(contact);
+  emailControl(contact);
+
   if (
-    firstNameControl() &&
-    lastNameControl() &&
-    cityControl() &&
-    addressControl() &&
-    emailControl()
+    emptyBasket(productRegister) &&
+    firstNameControl(contact) &&
+    lastNameControl(contact) &&
+    cityControl(contact) &&
+    addressControl(contact) &&
+    emailControl(contact)
   ) {
     localStorage.setItem("formulaireValues", JSON.stringify(contact));
     //Envoyer le formulaire et les produits sélectionnés vers l'API
@@ -192,7 +144,11 @@ btnSendForm.addEventListener("click", (e) => {
       products,
       contact,
     };
-    //Mettre l'ensemble des valeurs dans le localstorage et récupérer l'id de commande
+    postOrder(toSend);
+  }
+
+  //Mettre l'ensemble des valeurs dans le localstorage et récupérer l'id de commande
+  function postOrder(toSend) {
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       body: JSON.stringify(toSend),
@@ -208,3 +164,78 @@ btnSendForm.addEventListener("click", (e) => {
       });
   }
 });
+
+function emptyBasket(productRegister) {
+  if (productRegister.length > 0) {
+    return true;
+  } else {
+    alert("Votre panier est vide");
+    return false;
+  }
+}
+
+function firstNameControl(contact) {
+  const regexPrenomNomVille = (value) => {
+    return /^(([a-zA-ZÀ-ÿ]+[\s\-]{1}[a-zA-ZÀ-ÿ]+)|([a-zA-ZÀ-ÿ]+))$/.test(value);
+  };
+
+  const firstName = contact.firstName;
+  if (regexPrenomNomVille(firstName)) {
+    return true;
+  } else {
+    const errorMsg = "Merci de transmettre des données valides";
+    const displayError = document.querySelector("#firstNameErrorMsg");
+    displayError.innerHTML = errorMsg;
+    return false;
+  }
+}
+function lastNameControl(contact) {
+  const regexPrenomNomVille = (value) => {
+    return /^(([a-zA-ZÀ-ÿ]+[\s\-]{1}[a-zA-ZÀ-ÿ]+)|([a-zA-ZÀ-ÿ]+))$/.test(value);
+  };
+  const lastName = contact.lastName;
+  if (regexPrenomNomVille(lastName)) {
+    return true;
+  } else {
+    const errorMsg = "Merci de transmettre des données valides";
+    const displayError = document.querySelector("#lastNameErrorMsg");
+    displayError.innerHTML = errorMsg;
+    return false;
+  }
+}
+function cityControl(contact) {
+  const regexPrenomNomVille = (value) => {
+    return /^(([a-zA-ZÀ-ÿ]+[\s\-]{1}[a-zA-ZÀ-ÿ]+)|([a-zA-ZÀ-ÿ]+))$/.test(value);
+  };
+  const city = contact.city;
+  if (regexPrenomNomVille(city)) {
+    return true;
+  } else {
+    const errorMsg = "Merci de transmettre des données valides";
+    const displayError = document.querySelector("#cityErrorMsg");
+    displayError.innerHTML = errorMsg;
+    return false;
+  }
+}
+function addressControl(contact) {
+  const adress = contact.address;
+  if (/^(([a-zA-ZÀ-ÿ0-9]+[\s\-]{1}[a-zA-ZÀ-ÿ0-9]+)){1,10}$/.test(adress)) {
+    return true;
+  } else {
+    const errorMsg = "Merci de transmettre des données valides";
+    const displayError = document.querySelector("#addressErrorMsg");
+    displayError.innerHTML = errorMsg;
+    return false;
+  }
+}
+function emailControl(contact) {
+  const mail = contact.email;
+  if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]{2,}\.[a-z]{2,4}$/.test(mail)) {
+    return true;
+  } else {
+    const errorMsg = "Merci de transmettre des données valides";
+    const displayError = document.querySelector("#emailErrorMsg");
+    displayError.innerHTML = errorMsg;
+    return false;
+  }
+}
