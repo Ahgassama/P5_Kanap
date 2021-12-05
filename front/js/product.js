@@ -107,11 +107,11 @@ function addProductToCart(productItem) {
   //Création du tableau dans la variable
   let productRegister = [];
   let otherProduct = true;
-  //Si le localstorage est vide, créé un nouveau tableau productRegister et enregistre le
+  //Si le localstorage est vide, créé un nouveau tableau productRegister et l'enregistrer
   if (localStorage.getItem("canape") === null) {
     productRegister.push(productItem);
     localStorage.setItem("canape", JSON.stringify(productRegister));
-    //Sinon récupérer le tableau du localstorage , y ajouter le nouveau produit et enregistrer le tableau
+    //Sinon récupérer le tableau du localstorage , y ajouter le nouveau produit et mettre à jour le tableau
   } else {
     productRegister = JSON.parse(localStorage.getItem("canape"));
 

@@ -3,9 +3,8 @@ let productRegister = localStorage.getItem("canape")
   ? JSON.parse(localStorage.getItem("canape"))
   : [];
 
-//Affichage des produits du panier
 //Sélection de la classe ou injecter le code html
-
+//Affichage des produits du panier
 const positionElement = document.querySelector("#cart__items");
 displayItem();
 
